@@ -27,5 +27,8 @@ jobs:
       run: |
         git diff --exit-code || (echo 'Failed: Run `poetry run black`' && exit 1)
 
+    - name: Lint
+      run: docker compose exec app bash -c "cd ./app && /etc/poetry/bin/poetry run flake8 app tests"
+
     - name: Static Analysis
       run: docker compose exec app bash -c "cd ./app && /etc/poetry/bin/poetry run mypy app"
