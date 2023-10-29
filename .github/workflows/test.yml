@@ -1,0 +1,30 @@
+name: Python Script Test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: Kesin11/actions-timeline@v1
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build and Start Containers
+      run: docker compose up -d --build
+
+    - name: Install Dependencies
+      run: docker compose exec app bash -c "cd ./app && /etc/poetry/bin/poetry install"
+
+    - name: Test with Pytest
+      run: docker compose exec app bash -c "cd ./app && /etc/poetry/bin/poetry run pytest"
+
+    # - name: Test with Pytest and Coverage
+    #  run: docker compose exec app bash -c "cd ./app && /etc/poetry/bin/poetry run coverage run -m pytest --duration=10"
+
+    # - name: Show Coverage Report
+    # run: docker compose exec app bash -c "cd ./app && /etc/poetry/bin/poetry run coverage report -m"
