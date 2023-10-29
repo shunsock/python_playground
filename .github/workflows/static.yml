@@ -1,0 +1,35 @@
+name: Static Test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: Kesin11/actions-timeline@v1
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build and Start Containers
+      run: docker compose up -d --build
+
+    - name: Install Dependencies
+      run: docker compose exec app bash -c "/etc/poetry/bin/poetry install"
+      working-directory: app
+
+    - name: Formatting Test (Run)
+      run: docker compose exec app bash -c "/etc/poetry/bin/poetry run black"
+      working-directory: app
+
+    - name: Formatting Test (Evaluate)
+      run: |
+        git diff --exit-code || (echo 'Failed: Run `poetry run black`' && exit 1)
+      working-directory: app
+
+    - name: Static Analysis
+      run: docker compose exec app bash -c "/etc/poetry/bin/poetry run mypy app"
+      working-directory: app
