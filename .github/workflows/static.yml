@@ -21,7 +21,7 @@ jobs:
       run: docker compose exec app bash -c "cd ./app && /etc/poetry/bin/poetry install"
 
     - name: Formatting Test (Run)
-      run: docker compose exec app bash -c "cd ./app && /etc/poetry/bin/poetry run black"
+      run: docker compose exec app bash -c "cd ./app && /etc/poetry/bin/poetry run black app tests"
 
     - name: Formatting Test (Evaluate)
       run: |
