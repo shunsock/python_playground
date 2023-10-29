@@ -22,7 +22,7 @@ def sentry_init() -> None:
         # We recommend adjusting this value in production.
         profiles_sample_rate=1.0,
     )
-    division_by_zero = 1 / 0
+    division_by_zero = 1 / 0  # noqa: F841
     sentry_sdk.flush()  # for pass all events to sentry
     return
 
