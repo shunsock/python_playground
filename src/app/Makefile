@@ -1,12 +1,15 @@
-.PHONY: all formatting static-analysis test report
+.PHONY: all formatting linting static-analysis test report
 
-all: formatting static-analysis test report
+all: formatting linting static-analysis test report
 
 project_name = app
 
 formatting:
 	poetry run isort $(project_name) tests
 	poetry run black $(project_name) tests
+
+linting:
+	poetry run flake8 $(project_name) tests
 
 static-analysis:
 	poetry run mypy app
