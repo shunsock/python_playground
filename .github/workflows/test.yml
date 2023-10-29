@@ -1,4 +1,4 @@
-name: Static Test
+name: Python Script Test
 
 on:
   pull_request:
@@ -18,9 +18,7 @@ jobs:
       run: docker compose up -d --build
 
     - name: Install Dependencies
-      run: docker compose exec app bash -c "/etc/poetry/bin/poetry install"
-      working-directory: app
+      run: docker compose exec app bash -c "cd ./app && /etc/poetry/bin/poetry install"
 
     - name: Test with Pytest and Coverage
-      run: docker compose exec app bash -c "/etc/poetry/bin/poetry run coverage run pytest"
-      working-directory: app
+      run: docker compose exec app bash -c "cd ./app && /etc/poetry/bin/poetry run coverage run pytest"
